@@ -22,17 +22,33 @@
             <h1 style="margin-top: 10px;"><span id="duration">30</span> minutos</h1>
             <label style="display: block; width: 100%;">
                 0 <span style="float: right;">120</span>
-                <input id="duration-range" ontouchend="set_duration()" type="range" min="0" max="120" value="30" />
+                <input
+                    id="duration-range"
+                    ontouchend="set_duration()"
+                    type="range"
+                    min="0"
+                    max="120"
+                    step="5"
+                    value="30"
+                />
             </label>
             
             <h3 style="margin-bottom: 0px;">¿Cada cuanto te aviso?</h3>
             <h1 style="margin-top: 10px;"><span id="interval">5</span> minutos</h1>
             <label style="display: block; width: 100%;">
                 0 <span style="float: right;">60</span>
-                <input id="interval-range" ontouchend="set_interval()" type="range" min="0" max="60" value="5" />
+                <input
+                    id="interval-range"
+                    ontouchend="set_interval()"
+                    type="range"
+                    min="0"
+                    max="60"
+                    step="5"
+                    value="5"
+                />
             </label>
             
-            <button style="width: 100%; margin-top: 20px;" onclick="start()">Empezar</button>
+            <button style="width: 100%; margin-top: 20px;" ontouchstart="start()">Empezar</button>
         </div>
         
         <script src="main.js"></script>
