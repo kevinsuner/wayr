@@ -1,13 +1,40 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <meta charset="utf-8">
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <link rel="stylesheet" href="pico.min.css" />
         <title>Wayr</title>
     </head>
     <body>
-        <input id="duration-input" type="text" placeholder="Duration">
-        <input id="interval-input" type="text" placeholder="Interval">
-        <button onclick="start()">Start</button>
+        <div style="
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            padding: 0 10%;
+        ">
+            <h1 style="margin-bottom: 0px;">Wayr</h1>
+            <p>(why are you running)</p>
+            
+            <h3 style="margin-bottom: 0px;">¿Cuanto vas a correr?</h3>
+            <h1 style="margin-top: 10px;"><span id="duration">30</span> minutos</h1>
+            <label style="display: block; width: 100%;">
+                0 <span style="float: right;">120</span>
+                <input id="duration-range" ontouchend="set_duration()" type="range" min="0" max="120" value="30" />
+            </label>
+            
+            <h3 style="margin-bottom: 0px;">¿Cada cuanto te aviso?</h3>
+            <h1 style="margin-top: 10px;"><span id="interval">5</span> minutos</h1>
+            <label style="display: block; width: 100%;">
+                0 <span style="float: right;">60</span>
+                <input id="interval-range" ontouchend="set_interval()" type="range" min="0" max="60" value="5" />
+            </label>
+            
+            <button style="width: 100%; margin-top: 40px;" onclick="start()">Empezar</button>
+        </div>
+        
         <script src="main.js"></script>
     </body>
 </html>
