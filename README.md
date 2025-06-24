@@ -1,3 +1,3 @@
-# Wayr (Why. Are. You. Running) 
+# Wayr
 
-A WebApp that I've built for my wife during San Juan :)
+Why are you running? A web app that I've built for my wife during San Juan :)
