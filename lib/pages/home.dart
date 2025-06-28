@@ -117,7 +117,7 @@ class _HomeState extends State<Home> {
             Slider(
               value: _duration,
               max: 120,
-              divisions: 24,
+              divisions: 120,
               onChanged: _setDuration,
             ),
 
@@ -148,14 +148,23 @@ class _HomeState extends State<Home> {
             Slider(
               value: _interval,
               max: 60,
-              divisions: 12,
+              divisions: 60,
               onChanged: _setInterval,
             ),
 
             SizedBox(height: 40),
 
             ElevatedButton(
-              onPressed: _startTimer,
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text('¡A por ello!'),
+                    duration: Duration(seconds: 5),
+                  ),
+                );
+                
+                _startTimer();
+              },
               style: ElevatedButton.styleFrom(
                 backgroundColor: Theme.of(context).colorScheme.primary,
                 foregroundColor: Theme.of(context).colorScheme.onPrimary,
