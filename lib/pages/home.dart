@@ -1,4 +1,8 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_tts/flutter_tts.dart';
+import 'package:wakelock_plus/wakelock_plus.dart';
 
 class Home extends StatefulWidget {
   const Home({super.key});
@@ -7,8 +11,17 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
+  FlutterTts flutterTts = FlutterTts();
+  bool _ttsReady = false;
+  Timer? _timer;
   double _duration = 30;
   double _interval = 5;
+
+  @override
+  void initState() {
+    super.initState();
+    _initTts();
+  }
 
   void _setDuration(double value) {
     setState(() {
@@ -19,6 +32,48 @@ class _HomeState extends State<Home> {
   void _setInterval(double value) {
     setState(() {
       _interval = value;
+    });
+  }
+
+  Future<void> _initTts() async {
+    await flutterTts.setLanguage('es-ES');
+    await flutterTts.setSpeechRate(0.5);
+    await flutterTts.setVolume(1.0);
+    await flutterTts.setPitch(1.0);
+    await flutterTts.setSharedInstance(true);
+
+    setState(() {
+      _ttsReady = true;
+    });
+  }
+
+  Future<void> _speak(String text) async {
+    if (_ttsReady) {
+      await flutterTts.speak(text);
+    }
+  }
+
+  void _startTimer() {
+    WakelockPlus.enable();
+    if (_timer != null) _timer!.cancel();
+
+    int intervalSeconds = (_interval * 60).toInt();
+    int elapsedMinutes = 0;
+    int remainingMinutes = _duration.toInt();
+
+    _timer = Timer.periodic(Duration(seconds: intervalSeconds), (timer) {
+      if (remainingMinutes > 0) {
+        elapsedMinutes += _interval.toInt();
+        remainingMinutes = _duration.toInt() - elapsedMinutes;
+        _speak(
+          'Intervalo de ${_interval.toInt()} minutos completado, $remainingMinutes minutos restantes',
+        );
+      } else {
+        _speak('Ejercicio completado');
+        _timer?.cancel();
+        _timer = null;
+        WakelockPlus.disable();
+      }
     });
   }
 
@@ -95,6 +150,21 @@ class _HomeState extends State<Home> {
               max: 60,
               divisions: 12,
               onChanged: _setInterval,
+            ),
+
+            SizedBox(height: 40),
+
+            ElevatedButton(
+              onPressed: _startTimer,
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Theme.of(context).colorScheme.primary,
+                foregroundColor: Theme.of(context).colorScheme.onPrimary,
+                padding: EdgeInsets.symmetric(horizontal: 40, vertical: 16),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              ),
+              child: Text('Empezar'),
             ),
           ],
         ),
