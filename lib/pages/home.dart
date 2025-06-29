@@ -40,23 +40,28 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> with WidgetsBindingObserver {
-  String _getDeviceLanguage() {
-    List<Locale> locales = View.of(context).platformDispatcher.locales;
+  String _deviceLanguage = 'EN';
+
+  void _initLanguage() {
+    List<Locale> locales = WidgetsBinding.instance.platformDispatcher.locales;
     if (locales.isNotEmpty) {
-      return locales.first.languageCode.toUpperCase() == 'ES' ? 'ES' : 'EN';
+      setState(() {
+        _deviceLanguage = locales.first.languageCode.toUpperCase() == 'ES'
+          ? 'ES'
+          : 'EN';
+      });
     }
-    return 'EN';
   }
 
   String _getLocalizedString(String key) {
-    return localizationsMap[_getDeviceLanguage()]?[key] ?? key;
+    return localizationsMap[_deviceLanguage]?[key] ?? key;
   }
 
   FlutterTts flutterTts = FlutterTts();
   bool _ttsReady = false;
 
   Future<void> _initTts() async {
-    _getDeviceLanguage() == 'ES'
+    _deviceLanguage == 'ES'
       ? await flutterTts.setLanguage('es-ES')
       : await flutterTts.setLanguage('en-US');
     await flutterTts.setSpeechRate(0.5);
@@ -91,6 +96,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
   void initState() {
     super.initState();
     WidgetsBinding.instance.addObserver(this); // register widget as listener
+    _initLanguage();
     _initTts();
   }
 
