@@ -41,20 +41,24 @@ class Home extends StatefulWidget {
 
 class _HomeState extends State<Home> with WidgetsBindingObserver {
   String _getDeviceLanguage() {
-    String locale = Localizations.localeOf(context).languageCode.toUpperCase();
-    return localizationsMap.containsKey(locale) ? locale : 'EN';
+    List<Locale> locales = View.of(context).platformDispatcher.locales;
+    if (locales.isNotEmpty) {
+      return locales.first.languageCode.toUpperCase() == 'ES' ? 'ES' : 'EN';
+    }
+    return 'EN';
   }
 
   String _getLocalizedString(String key) {
-    String language = _getDeviceLanguage();
-    return localizationsMap[language]?[key] ?? key;
+    return localizationsMap[_getDeviceLanguage()]?[key] ?? key;
   }
 
   FlutterTts flutterTts = FlutterTts();
   bool _ttsReady = false;
 
   Future<void> _initTts() async {
-    await flutterTts.setLanguage('es-ES');
+    _getDeviceLanguage() == 'ES'
+      ? await flutterTts.setLanguage('es-ES')
+      : await flutterTts.setLanguage('en-US');
     await flutterTts.setSpeechRate(0.5);
     await flutterTts.setVolume(1.0);
     await flutterTts.setPitch(1.0);
@@ -151,7 +155,7 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
         elapsedMinutes += _interval.toInt();
         remainingMinutes = _duration.toInt() - elapsedMinutes;
         _speak(
-          '${_getLocalizedString('timer_remainder_1')} ${_interval.toInt()} ${_getLocalizedString('timer_remainder_2')}, $remainingMinutes ${_getLocalizedString('time_remainder_3')}, ${_getLocalizedString('timer_remainder_4')}',
+          '${_getLocalizedString('timer_remainder_1')} ${_interval.toInt()} ${_getLocalizedString('timer_remainder_2')}, $remainingMinutes ${_getLocalizedString('timer_remainder_3')}, ${_getLocalizedString('timer_remainder_4')}',
         );
       } else {
         _speak(_getLocalizedString('timer_finish'));
