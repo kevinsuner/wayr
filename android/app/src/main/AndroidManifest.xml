@@ -3,6 +3,10 @@
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
 
+    <service
+        android:name="com.example.wayr.BackgroundService",
+        android:foregroundServiceType="mediaPlayback" />
+
     <application
         android:label="wayr"
         android:name="${applicationName}"
