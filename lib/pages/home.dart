@@ -150,7 +150,9 @@ class _HomeState extends State<Home> with WidgetsBindingObserver {
       if (remainingMinutes > 0) {
         elapsedMinutes += _interval.toInt();
         remainingMinutes = _duration.toInt() - elapsedMinutes;
-        _speak('${_getLocalizedString('timer_remainder_1')} ${_interval.toInt()} ${_getLocalizedString('timer_remainder_2')}, $remainingMinutes ${_getLocalizedString('time_remainder_3')}, ${_getLocalizedString('timer_remainder_4')}');
+        _speak(
+          '${_getLocalizedString('timer_remainder_1')} ${_interval.toInt()} ${_getLocalizedString('timer_remainder_2')}, $remainingMinutes ${_getLocalizedString('time_remainder_3')}, ${_getLocalizedString('timer_remainder_4')}',
+        );
       } else {
         _speak(_getLocalizedString('timer_finish'));
         _timer?.cancel();
